@@ -1,18 +1,34 @@
-from PIL import Image, ImageFont, ImageDraw
-# Display
-# DISP_WIDTH = 128
-# DISP_HEIGHT = 64
-
-# font = ImageFont.truetype("fonts/minecraftia.ttf", 8)
-# display = Image.new("1", (DISP_WIDTH, DISP_HEIGHT))
-
-# tracking_screen = ImageDraw.Draw(display)
-# tracking_screen.multiline_text((4, 4), text=" - Santa Tracker - ", font=font, fill=1, align="center")
-# tracking_screen.multiline_text((4, 16), "Loc: \n{}, {}\nDel.: {}\nStops: {}".format(curr_loc["city"], curr_loc["region"], curr_loc["presentsDelivered"], stops), font=font, fill=1, spacing=-4)
-
-# display.save("tracking.png")
+from screens import Screen
+import RPi.GPIO as GPIO
 
 class TrackerDisplay:
-
-    def __init__(self):
+    
+    def __init__(self, width=128, height=64):
+        
+        self.__width = width
+        self.__height = height
+        
+        # Registering screens
+        self.__screen_idx = 0
+        self.__screens = []
+        
+        # Registering interrupts
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)    
+        GPIO.add_event_detect(23, GPIO.FALLING, self.__irq, bouncetime=300)
+        
+    def __irq(self, ctx):
+        print(len(self.__screens))
+        if ((self.__screen_idx + 1) < len(self.__screens)):
+            self.__screen_idx += 1
+        else:
+            self.__screen_idx = 0
+    
+    def render(self):
+        return self.__screens[self.__screen_idx].render()
+        
+    def registerscreen(self, screen):
+        self.__screens.append(screen)
+        
+        
 

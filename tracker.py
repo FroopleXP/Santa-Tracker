@@ -4,7 +4,8 @@ from datetime import datetime
 
 class SantaTracker:
 
-    def __init__(self):
+    def __init__(self, offset=0):
+        self.__offset = offset
         self.__tracking_data = self.__load_data()
 
 
@@ -25,9 +26,9 @@ class SantaTracker:
         time_diff = int(time_takeoff_this_year - time_data_starts)
         return int(time.time() * 1000) - time_diff
 
-    def getcurrentlocation(self, offset=0):
+    def getcurrentlocation(self):
 
-        time = self.__get_adj_time() + offset
+        time = self.__get_adj_time() + self.__offset
         latest_dst = self.__tracking_data["destinations"][0]
 
         for destination in self.__tracking_data["destinations"]:
@@ -36,9 +37,9 @@ class SantaTracker:
 
         return latest_dst
 
-    def getcurrentstatus(self, offset=0):
+    def getcurrentstatus(self):
 
-        time = self.__get_adj_time() + offset
+        time = self.__get_adj_time() + self.__offset
         latest_status = self.__tracking_data["stream"][0]
 
         for status in self.__tracking_data["stream"]:
@@ -48,7 +49,7 @@ class SantaTracker:
 
         return latest_status
 
-    def getstopsfrom(self, id="edinburgh", time_offset=0):
+    def getstopsfrom(self, id="edinburgh"):
 
         target = self.__get_index_from_id(id)
         
@@ -56,6 +57,6 @@ class SantaTracker:
         if (target == None):
             target = 0
 
-        curr = self.__get_index_from_id(self.getcurrentlocation(time_offset)["id"])
-        return int(target-curr)
+        curr = self.__get_index_from_id(self.getcurrentlocation()["id"])
+        return int(target - curr)
 

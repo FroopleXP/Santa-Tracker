@@ -1,8 +1,8 @@
 import time
 
-class ScollingText:
+class ScrollingText:
     
-    def __init__(self, text, window_size=13, interval=200):
+    def __init__(self, text, window_size=13, interval=2):
         self.__text_buff = list(text)
         self.__window_size = window_size
         self.__interval = interval / 1000
@@ -13,7 +13,7 @@ class ScollingText:
             self.__animate = False
 
         if self.__animate:
-            for _ in range(self.__window_size):
+            for _ in range(0, self.__window_size):
                 self.__text_buff.append(" ")
 
     def __update_last_poll(self):

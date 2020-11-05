@@ -1,42 +1,49 @@
 import time
-from animation import ScollingText
+import Adafruit_SSD1306
+import threading
+import RPi.GPIO as GPIO
+
+# Importing tracker
 from tracker import SantaTracker
 
-from PIL import Image, ImageFont, ImageDraw
+# Importing screens
+from screens.screen_tracker import TrackerScreen
+from screens.screen_calendar import CalendarScreen
 
-tracker = SantaTracker()
+# Importing display
+from display import TrackerDisplay
 
-time_offset = 4374420000
+# Display settings
+DISPLAY_FREQ = 1 / 5
+TRACKER_OFFSET = 4206510000
 
-# Display
-DISP_WIDTH = 128
-DISP_HEIGHT = 64
+# Creating OLED display
+display = Adafruit_SSD1306.SSD1306_128_64(rst=24)
+display.begin()
 
-font = ImageFont.truetype("fonts/minecraftia.ttf", 8)
+# Creating instance of Santa Tracker
+tracker = SantaTracker(TRACKER_OFFSET)
 
-disp_freq = 10
-last_loc_id = None
-loc_txt = None
-last_time = time.time()
-interval = 1 / disp_freq
+# Creating a display
+tracker_display = TrackerDisplay()
+tracker_display.registerscreen(TrackerScreen(tracker))
+tracker_display.registerscreen(CalendarScreen())
+
+def updatescreen(screen): 
+    display.image(screen)
+    display.display()
 
 while True:
-
-    if (time.time() - last_time >= interval): # Set framerate
-        last_time = time.time()
-
-        # Checking if the location has changed
-        curr_loc = tracker.getcurrentlocation(time_offset)
-        if (last_loc_id == None or curr_loc["id"] != last_loc_id):
-            last_loc_id = curr_loc["id"]
-            loc_txt = ScollingText("{}, {}".format(curr_loc["city"], curr_loc["region"]), window_size=12)
-
-        display = Image.new("1", (DISP_WIDTH, DISP_HEIGHT))
-        tracking_screen = ImageDraw.Draw(display)
-        tracking_screen.text((4, 16), "Loc: {}".format(loc_txt.render()), font=font, fill=1, spacing=-4)
-
-        display.save("tracking.png")
+    try:
+        updatescreen(tracker_display.render())
+        time.sleep(.1)
+    except KeyboardInterrupt:
+        break
+        
+GPIO.cleanup()
+    
 
 
 
+        
 
