@@ -15,8 +15,7 @@ from display import TrackerDisplay
 
 # Display settings
 DISPLAY_FREQ = 1 / 5
-#TRACKER_OFFSET = 3918270000
-TRACKER_OFFSET = 0
+TRACKER_OFFSET = 3918270000
 
 # Creating OLED display
 display = Adafruit_SSD1306.SSD1306_128_64(rst=24)
@@ -27,13 +26,13 @@ tracker = SantaTracker(TRACKER_OFFSET)
 
 # Creating a display
 tracker_display = TrackerDisplay()
-tracker_display.registerscreen(TrackerScreen(tracker))
-tracker_display.registerscreen(CalendarScreen())
+tracker_display.register(name="tracker", screen=TrackerScreen(tracker))
+tracker_display.register(name="calendar", screen=CalendarScreen())
 
 # Setting up button int.
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(23, GPIO.FALLING, lambda c : tracker_display.next(), bouncetime=300)
+GPIO.add_event_detect(23, GPIO.FALLING, lambda c : tracker_display.prev(), bouncetime=300)
 
 while True:
     try:
