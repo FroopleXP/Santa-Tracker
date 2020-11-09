@@ -15,7 +15,8 @@ from display import TrackerDisplay
 
 # Display settings
 DISPLAY_FREQ = 1 / 5
-TRACKER_OFFSET = 4206510000
+TRACKER_OFFSET = 3918270000
+#TRACKER_OFFSET = 0
 
 # Creating OLED display
 display = Adafruit_SSD1306.SSD1306_128_64(rst=24)
@@ -36,7 +37,7 @@ def updatescreen(screen):
 while True:
     try:
         updatescreen(tracker_display.render())
-        time.sleep(.1)
+        time.sleep(.3)
     except KeyboardInterrupt:
         break
         

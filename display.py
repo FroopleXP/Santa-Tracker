@@ -18,7 +18,6 @@ class TrackerDisplay:
         GPIO.add_event_detect(23, GPIO.FALLING, self.__irq, bouncetime=300)
         
     def __irq(self, ctx):
-        print(len(self.__screens))
         if ((self.__screen_idx + 1) < len(self.__screens)):
             self.__screen_idx += 1
         else:

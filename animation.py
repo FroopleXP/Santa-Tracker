@@ -2,7 +2,7 @@ import time
 
 class ScrollingText:
     
-    def __init__(self, text, window_size=13, interval=2):
+    def __init__(self, text, window_size=13, interval=5):
         self.__text_buff = list(text)
         self.__window_size = window_size
         self.__interval = interval / 1000
@@ -21,7 +21,7 @@ class ScrollingText:
 
     def __list_to_str(_, l):
         return "".join(l)
-
+    
     def render(self):
         if self.__animate:
             diff = time.time() - self.__last_poll
