@@ -6,7 +6,7 @@ from PIL import Image, ImageFont, ImageDraw
 
 class CalendarScreen(Screen):
     
-    def __init__(self, width=128, height=64):
+    def __init__(self, tracker, width=128, height=64):
         self.__width = width
         self.__height = height
         
