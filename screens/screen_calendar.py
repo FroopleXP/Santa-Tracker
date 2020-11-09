@@ -1,25 +1,23 @@
-from screens import Screen
-import RPi.GPIO as GPIO
+import time
 
-from animation import ScrollingText
+from datetime import datetime
+from screens import Screen
 from PIL import Image, ImageFont, ImageDraw
 
 class CalendarScreen(Screen):
     
-    def __init__(self, tracker, width=128, height=64):
+    def __init__(self, width=128, height=64):
+
+        self.__count_to = int(datetime.strptime("24/12/{} 10:00:00".format(datetime.now().year), "%d/%m/%Y %H:%M:%S").timestamp())
         self.__width = width
         self.__height = height
         
-        self.__number = 0
-        
         # Creating image
-        self.__font = ImageFont.truetype("fonts/liberation.ttf", 10)
+        self.__sm_font = ImageFont.truetype("fonts/minecraftia.ttf", 8)
+        self.__lg_font = ImageFont.truetype("fonts/liberation.ttf", 32)
         self.__image = Image.new("1", (self.__width, self.__height))
         self.__frame = ImageDraw.Draw(self.__image)
-    
-    def __inc_number(self, channel):
-        self.__number += 1
-    
+
     def __clear_frame(self):
         self.__frame.rectangle((0, 0, self.__width, self.__height), fill=0)
     
@@ -27,7 +25,13 @@ class CalendarScreen(Screen):
         
         self.__clear_frame()
         
-        self.__frame.multiline_text((4, 3), text="Number: {}".format(self.__number), font=self.__font, fill=1)
+        days = int((self.__count_to - time.time()) / 86400)
+        plural = "s" if days > 1 else ""
+        
+        self.__frame.multiline_text((4, 4), text="Countdown", font=self.__sm_font, fill=1)
+        self.__frame.multiline_text((75, 20), text="Day{} 'til".format(plural), font=self.__sm_font, fill=1)
+        self.__frame.multiline_text((75, 30), text="take off", font=self.__sm_font, fill=1)
+        self.__frame.multiline_text((4, 16), text="{}".format(days), font=self.__lg_font, fill=1)
         
         return self.__image
         
