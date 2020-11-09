@@ -15,8 +15,8 @@ from display import TrackerDisplay
 
 # Display settings
 DISPLAY_FREQ = 1 / 5
-TRACKER_OFFSET = 3918270000
-#TRACKER_OFFSET = 0
+#TRACKER_OFFSET = 3918270000
+TRACKER_OFFSET = 0
 
 # Creating OLED display
 display = Adafruit_SSD1306.SSD1306_128_64(rst=24)
@@ -30,13 +30,15 @@ tracker_display = TrackerDisplay()
 tracker_display.registerscreen(TrackerScreen(tracker))
 tracker_display.registerscreen(CalendarScreen())
 
-def updatescreen(screen): 
-    display.image(screen)
-    display.display()
+# Setting up button int.
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.add_event_detect(23, GPIO.FALLING, lambda c : tracker_display.next(), bouncetime=300)
 
 while True:
     try:
-        updatescreen(tracker_display.render())
+        display.image(tracker_display.render())
+        display.display()
         time.sleep(.3)
     except KeyboardInterrupt:
         break

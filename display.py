@@ -10,24 +10,21 @@ class TrackerDisplay:
         
         # Registering screens
         self.__screen_idx = 0
+        self.__max_idx = 0
         self.__screens = []
-        
-        # Registering interrupts
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)    
-        GPIO.add_event_detect(23, GPIO.FALLING, self.__irq, bouncetime=300)
-        
-    def __irq(self, ctx):
-        if ((self.__screen_idx + 1) < len(self.__screens)):
-            self.__screen_idx += 1
-        else:
-            self.__screen_idx = 0
     
     def render(self):
         return self.__screens[self.__screen_idx].render()
-        
+    
+    def prev(self):
+        self.__screen_idx = self.__max_idx if self.__screen_idx - 1 < 0 else self.__screen_idx - 1
+
+    def next(self):
+        self.__screen_idx = 0 if self.__screen_idx + 1 > self.__max_idx else self.__screen_idx + 1
+    
     def registerscreen(self, screen):
         self.__screens.append(screen)
+        self.__max_idx = len(self.__screens) - 1
         
         
 
