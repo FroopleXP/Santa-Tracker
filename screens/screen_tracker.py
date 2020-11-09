@@ -1,4 +1,4 @@
-from screens import Screen
+from . screen import Screen
 
 from animation import ScrollingText
 from datetime import datetime
@@ -38,18 +38,18 @@ class TrackerScreen(Screen):
         
         # Printing local time
         local_time = datetime.fromtimestamp(int(self.__tracker.get_adj_time() / 1000)).strftime("%H:%M")
-        self.__frame.text((95, 4), "[{}]".format(local_time), font=self.__sm_font, fill=1)
+        self.__frame.text((6, 48), "LT: {} | D: {}".format(local_time, presents), font=self.__sm_font, fill=1)
         
         if (stopover):
             departure = datetime.fromtimestamp(int(stopover.departure / 1000)).strftime("%H:%M")
-            self.__frame.text((6, 4), "Location", font=self.__sm_font, fill=1)
-            self.__frame.text((6, 48), "ETD: {} | D: {}".format(departure, presents), font=self.__sm_font, fill=1)
+            self.__frame.text((6, 4), "Landed", font=self.__sm_font, fill=1)
+            self.__frame.text((76, 4), "ETD: {}".format(departure), font=self.__sm_font, fill=1)
             curr_location = stopover
             
         else:
             eta = datetime.fromtimestamp(int(location.get("next").arrival / 1000)).strftime("%H:%M")
             self.__frame.text((6, 4), "Next stop", font=self.__sm_font, fill=1)
-            self.__frame.text((6, 48), "ETA: {} | D: {}".format(eta, presents), font=self.__sm_font, fill=1)
+            self.__frame.text((76, 4), "ETA: {}".format(eta), font=self.__sm_font, fill=1)
             curr_location = location.get("next")
         
         # Checking if the location has changed

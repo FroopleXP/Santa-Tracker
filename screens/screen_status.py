@@ -3,11 +3,10 @@ import time
 from . screen import Screen
 from PIL import Image, ImageFont, ImageDraw
 
-class CalendarScreen(Screen):
+class StatusScreen(Screen):
     
-    def __init__(self, count_to, width=128, height=64):
-
-        self.__count_to = count_to
+    def __init__(self, width=128, height=64):
+        
         self.__width = width
         self.__height = height
         
@@ -24,13 +23,7 @@ class CalendarScreen(Screen):
         
         self.__clear_frame()
         
-        days = int((self.__count_to - time.time()) / 86400)
-        plural = "s" if days > 1 else ""
-        
-        self.__frame.multiline_text((4, 4), text="Countdown", font=self.__sm_font, fill=1)
-        self.__frame.multiline_text((75, 20), text="Day{} 'til".format(plural), font=self.__sm_font, fill=1)
-        self.__frame.multiline_text((75, 30), text="take off", font=self.__sm_font, fill=1)
-        self.__frame.multiline_text((4, 16), text="{}".format(days), font=self.__lg_font, fill=1)
+        self.__frame.multiline_text((4, 4), text="Status", font=self.__sm_font, fill=1)
         
         return self.__image
         
