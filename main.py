@@ -19,10 +19,6 @@ from screens.screen_shutdown import ShutdownScreen
 # Importing display
 from display import TrackerDisplay
 
-# Display settings
-DISPLAY_I2C_ADDR = 0x3c
-DISPLAY_RESET = 24
-
 # Tracking settings
 TRACKER_OFFSET = 0
 TIME_START_TRACKER = int(datetime.strptime("24/12/{} 10:00:00".format(datetime.now().year), "%d/%m/%Y %H:%M:%S").timestamp())
