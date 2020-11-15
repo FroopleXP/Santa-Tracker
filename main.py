@@ -20,14 +20,13 @@ from screens.screen_shutdown import ShutdownScreen
 from display import TrackerDisplay
 
 # Tracking settings
-TRACKER_OFFSET = 0
 TIME_START_TRACKER = int(datetime.strptime("24/12/{} 10:00:00".format(datetime.now().year), "%d/%m/%Y %H:%M:%S").timestamp())
 
 # Create the I2C Display
 display = adafruit_ssd1306.SSD1306_I2C(128, 64, busio.I2C(board.SCL, board.SDA))
 
 # Creating instance of Santa Tracker
-tracker = SantaTracker(TRACKER_OFFSET)
+tracker = SantaTracker()
 
 # Creating a display
 tracker_display = TrackerDisplay()
