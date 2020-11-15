@@ -2,3 +2,7 @@
 /__pycache__
 *.pyc
 /output
+/*.egg-info
+/dist
+/.venv/*
+pyvenv.cfg

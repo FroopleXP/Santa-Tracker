@@ -89,6 +89,9 @@ class SantaTracker:
         now = self.get_adj_time() # Note: mapping to 13 unix timestamp, the same as the default Date() method in JS
         dest = self.__findDestination(now)
         next = dest.next()
+        
+        if (not next): # This may be problematic
+            return
 
         # Check if Santa is at a location or in transit
         if (now < dest.departure):
