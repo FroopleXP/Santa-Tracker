@@ -14,10 +14,7 @@ setuptools.setup(
     url="https://github.com/FroopleXP/Santa-Tracker",
     packages=setuptools.find_packages(),
     classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-        "Santa Tracker :: Google"
+        "Santa Tracker"
     ],
     python_requires='>=3.6',
 )
