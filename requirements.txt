@@ -1,2 +1,4 @@
-Adafruit_SSD1306
-RPi
+rpi.gpio
+pillow
+adafruit-circuitpython-ssd1306
+    
