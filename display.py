@@ -14,15 +14,17 @@ class TrackerDisplay:
     
     def render(self) -> None:
         if (not len(self.__screens)): return # Do nothing if no screens are registered
-        screen = self.__current_screen or self.__default_screen # Default back to default screen is current screen isn't set
-        return self.__screens.get(screen).render()
-    
+        screen = self.__current_screen or self.__default_screen # Fall back to default screen if current screen isn't set
+        return self.__screens.get(screen).get("screen").render()
+ 
     def prev(self) -> None:
         screen_list = list(self.__screens)
         for idx, value in enumerate(screen_list):
             if (value == self.__current_screen):
                 if (not idx): self.__current_screen = screen_list[len(screen_list) - 1]
                 else: self.__current_screen = screen_list[idx - 1]
+                # Checking if this is a toggleable screen
+                if (not self.__screens.get(self.__current_screen).get("toggleable")): self.prev()
                 break
 
     def next(self) -> None:
@@ -31,15 +33,17 @@ class TrackerDisplay:
             if (value == self.__current_screen):
                 if (idx + 1 > len(self.__screens) - 1): self.__current_screen = screen_list[0]
                 else: self.__current_screen = screen_list[idx + 1]
+                # Checking if this is a toggleable screen ^^
+                if (not self.__screens.get(self.__current_screen).get("toggleable")): self.next()
                 break
                     
     def show(self, name) -> None:
         if (not name in self.__screens): return # Do nothing if screen isn't registered
         self.__current_screen = name
     
-    def register(self, name, screen, default=False) -> None:
+    def register(self, name, screen, default=False, toggleable=True) -> None:
         if (not len(self.__screens)): default = True # If this is the first screen, set as default
-        self.__screens[name] = screen
+        self.__screens[name] = { "toggleable": toggleable, "screen": screen }
         if (default): self.__default_screen = self.__current_screen = name
         
         

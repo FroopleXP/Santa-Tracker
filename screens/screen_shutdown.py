@@ -26,10 +26,9 @@ class ShutdownScreen(Screen):
     
     def __shutdown(self):
         self.__timer_has_ran = True
-        subprocess.call(["shutdown", "-h", "now"], shell=False)
+        subprocess.call(["sudo", "shutdown", "-h", "now"], shell=False)
     
     def render(self):
-    
         self.__clear_frame()
         
         self.__frame.text((6, 4), "Shutting down", font=self.__sm_font, fill=1)

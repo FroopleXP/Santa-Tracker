@@ -32,19 +32,22 @@ tracker = SantaTracker()
 tracker_display = TrackerDisplay()
 tracker_display.register(name="tracker", screen=TrackerScreen(tracker))
 tracker_display.register(name="calendar", screen=CalendarScreen(TIME_START_TRACKER))
-tracker_display.register(name="status", screen=StatusScreen())
-tracker_display.register(name="shutdown", screen=ShutdownScreen())
+tracker_display.register(name="shutdown", toggleable=False, screen=ShutdownScreen())
+
+# Buttons
+BTN_NEXT_SCREEN = 24
+BTN_PWR_DOWN = 23
 
 # Setting GPIO mode
 GPIO.setmode(GPIO.BCM)
 
 # Next screen toggle
-GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(23, GPIO.FALLING, lambda c : tracker_display.next(), bouncetime=300)
+GPIO.setup(BTN_NEXT_SCREEN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.add_event_detect(BTN_NEXT_SCREEN, GPIO.FALLING, lambda c : tracker_display.next(), bouncetime=300)
 
 # Power switch
-GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(24, GPIO.FALLING, lambda c : tracker_display.show("shutdown"), bouncetime=300)
+GPIO.setup(BTN_PWR_DOWN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.add_event_detect(BTN_PWR_DOWN, GPIO.FALLING, lambda c : tracker_display.show("shutdown"), bouncetime=300)
 
 def main():
     while True:

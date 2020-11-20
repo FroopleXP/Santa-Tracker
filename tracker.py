@@ -1,6 +1,7 @@
 import time
 import math
 import json
+import os
 from datetime import datetime
 
 class SantaLocation:
@@ -41,7 +42,7 @@ class SantaTracker:
         return arr
 
     def __load_destinations(self):
-        with open("data/tracking_data.json", "r") as f:
+        with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/tracking_data.json"), "r") as f:
             return json.load(f)
 
 
